@@ -7,12 +7,13 @@ import (
 	kubecontext "github.com/fanfengqiang/kubectl-dex/pkg/kubeconfig/context"
 	"github.com/fanfengqiang/kubectl-dex/pkg/kubeconfig/credential"
 
+	"github.com/howeyc/gopass"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	u, p string
+	username, password string
 )
 
 // loginCmd represents the login command
@@ -27,13 +28,25 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("login called")
-		fmt.Println("user:", u)
-		fmt.Println("password:", p)
+		fmt.Println("user:", username)
+		fmt.Println("password:", password)
 		fmt.Println("client_id:", viper.GetString("oidc.client.id"))
 		fmt.Println("client_secret:", viper.GetString("oidc.client.secret"))
 		fmt.Println("client_redirect_url:", viper.GetString("oidc.client.redirect_url"))
 		fmt.Println("issuer:", viper.GetString("oidc.issuer.url"))
 		fmt.Println("extra_scopes", viper.GetStringSlice("oidc.extra_scopes"))
+
+		if username == "" {
+			fmt.Print("Please enter your username: ")
+			fmt.Scanln(&username)
+		}
+		if password == "" {
+			fmt.Print("Please enter your password: ")
+
+			bytes, _ := gopass.GetPasswdMasked()
+			password = string(bytes)
+			fmt.Println(password)
+		}
 
 		clientID := viper.GetString("oidc.client.id")
 		clientSecret := viper.GetString("oidc.client.secret")
@@ -43,12 +56,12 @@ to quickly create a Cobra application.`,
 		scopes = append(scopes, viper.GetStringSlice("oidc.extra_scopes")...)
 
 		app := idtoken.Config(clientID, clientSecret, redirectURI, issuerURL, scopes)
-		token, _ := app.GetIDToken(u, p)
+		token, _ := app.GetIDToken(username, password)
 		rawIDToken := app.ParseToken(token)
 		fmt.Println(rawIDToken)
-		credential.Create(u, clientID, issuerURL, rawIDToken)
-		kubecontext.Create(u, "kubernetes")
-		kubecontext.Use(u, "kubernetes")
+		credential.Create(username, clientID, issuerURL, rawIDToken)
+		kubecontext.Create(username, "kubernetes")
+		kubecontext.Use(username, "kubernetes")
 
 	},
 }
@@ -56,7 +69,7 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(loginCmd)
 
-	loginCmd.Flags().StringVarP(&u, "user", "u", "fanfengqiang@qq.com", "dex user")
-	loginCmd.Flags().StringVarP(&p, "password", "p", "fanfengqiang", "dex password")
+	loginCmd.Flags().StringVarP(&username, "username", "u", "", "dex user")
+	loginCmd.Flags().StringVarP(&password, "password", "p", "", "dex password")
 
 }

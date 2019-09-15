@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/coreos/go-oidc v2.1.0+incompatible
+	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pquerna/cachecontrol v0.0.0-20180517163645-1555304b9b35 // indirect
 	github.com/spf13/cobra v0.0.5

@@ -11,8 +11,8 @@ func Create(user, clientID, issuerURL, rawIDToken string) {
 	cmd := exec.Command("kubectl", "config", "set-credentials", user, "--auth-provider", "oidc", "--auth-provider-arg", "idp-issuer-url="+issuerURL, "--auth-provider-arg", "client-id="+clientID, "--auth-provider-arg", "id-token="+rawIDToken)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("error occurred when create credential\n %s\n", err)
 	}
-	fmt.Printf("combined out:\n%s\n", string(out))
+	fmt.Printf("create credential output:\n%s\n", string(out))
 
 }

@@ -12,7 +12,7 @@ func Create(user, cluster string) {
 	cmd := exec.Command("kubectl", "config", "set-context", user+"/"+cluster, "--user="+user, "--cluster="+cluster)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("error occurred when create context\n %s\n", err)
 	}
-	fmt.Printf("combined out:\n%s\n", string(out))
+	fmt.Printf("Create context output:\n%s\n", string(out))
 }

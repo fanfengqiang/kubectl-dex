@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	kubecontext "github.com/fanfengqiang/kubectl-dex/pkg/kubeconfig/context"
+	"github.com/fanfengqiang/kubectl-dex/pkg/kubeconfig/credential"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +20,10 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("logout called")
+		user, _ := kubecontext.Get()
+		// kubecontext.Delete(user, cluster)
+		credential.Delete(user)
+
 	},
 }
 

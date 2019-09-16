@@ -12,7 +12,7 @@ func Use(user, cluster string) {
 	cmd := exec.Command("kubectl", "config", "use-context", user+"/"+cluster)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("error occurred when use context\n %s\n", err)
 	}
-	fmt.Printf("combined out:\n%s\n", string(out))
+	fmt.Printf("use context output:\n%s\n", string(out))
 }

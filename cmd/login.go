@@ -19,7 +19,7 @@ var (
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "A brief description of your command",
+	Short: "Log in to a dex user center",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

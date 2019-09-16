@@ -11,7 +11,7 @@ import (
 // logoutCmd represents the logout command
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
-	Short: "A brief description of your command",
+	Short: "Log out from a dex user center",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
